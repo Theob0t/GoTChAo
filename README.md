@@ -1,6 +1,5 @@
-```markdown
 # GoT-ChAo ⚡️🦀
-### Genotyping of Transcriptomes — Accelerated & Optimized
+### Genotyping of Targeted loci with single-cell Chromatin Accessibility (GoT-ChA) — Accelerated & Optimized
 
 ![Rust](https://img.shields.io/badge/Core-Rust-orange?style=flat-square&logo=rust)
 ![Python](https://img.shields.io/badge/Analysis-Python-blue?style=flat-square&logo=python)
@@ -182,5 +181,3 @@ The output directory will contain:
 ## 📝 Attribution
 
 *   **Original Concept:** [Landau Lab GoTChA](https://github.com/landau-lab/Gotcha)
-*   **License:** MIT
-```
