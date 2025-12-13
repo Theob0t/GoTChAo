@@ -1,0 +1,14 @@
+# Ignore build artifacts
+/target/
+/__pycache__/
+*.pyc
+
+# Ignore large container binaries (Rebuild them in CI instead)
+*.sif
+
+# Ignore system files
+.DS_Store
+.vscode/
+
+# Ignore test result folder
+tests/output_test_run
