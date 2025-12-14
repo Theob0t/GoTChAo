@@ -1,4 +1,3 @@
-```markdown
 # GoT-ChAo ⚡️🦀
 ### Genotyping of Targeted loci with single-cell Chromatin Accessibility (GoT-ChA) — Accelerated & Optimized
 

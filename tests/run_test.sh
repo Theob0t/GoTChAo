@@ -34,5 +34,5 @@ fi
 echo "--- 2. Verifying Results ---"
 # Compare the output we just made against the 'Gold Standard' committed in git
 python3 tests/verify_results.py \
-    "${OUTPUT_DIR}/YOUR_OUTPUT_FILE.csv" \
+    "${OUTPUT_DIR}/test_seq_R1_genotype_labels.csv" \
     "${DATA_DIR}/expected_output.csv"
