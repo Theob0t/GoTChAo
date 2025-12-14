@@ -3,6 +3,7 @@ name: Docker CI/CD
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*.*.*" ] # (Optional) Trigger on tags too
 
 env:
   REGISTRY: ghcr.io
@@ -19,35 +20,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1. Build Docker Image
+      # We need Python on the HOST to run the verification script
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Verification Dependencies
+        run: pip install pandas
+
       - name: Build Docker Image
         run: docker build . -t gotchao-image
 
-      # 2. Run Test (Includes Result Verification)
       - name: Run Test Suite
         run: |
           chmod +x tests/run_test.sh
-          # Set CI variable so script knows to use docker
           export CI=true
           ./tests/run_test.sh
 
-      # 3. Log in to GitHub Container Registry (Only if tests pass)
-      - name: Log in to the Container registry
+      - name: Log in to Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 4. Push Image to GitHub
       - name: Push Docker Image
         if: github.event_name != 'pull_request'
         run: |
-          # Tag image with standard format
           IMAGE_ID=$REGISTRY/$IMAGE_NAME
-          # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          
           echo "Pushing to $IMAGE_ID"
           docker tag gotchao-image $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
