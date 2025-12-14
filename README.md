@@ -28,7 +28,7 @@ The original pipeline was written in **R/Python**. While accurate, it faced perf
 1.  **Rust Core:** Handles heavy FASTQ parsing, barcode matching, and primer searching using **SIMD acceleration** and **Rayon parallelism**.
 2.  **Optimized Python:** Re-engineers statistical genotyping with vectorized NumPy operations and analytical moments for noise correction.
 
-| Feature | Original GoTChA | **GoT-ChAo** |
+| Feature | Original GoT-ChA | **GoT-ChAo** |
 | :--- | :--- | :--- |
 | **Language** | R / Python | **Rust** + Python |
 | **Speed (60M Reads)** | Hours | **< 3 Minutes** |
@@ -83,16 +83,13 @@ The `.sif` file is a standalone executable. We use `-B` to bind your data folder
 # Example: Running on a cluster
 # Note: We use 'apptainer run' to explicitly pass the -B bind flag
 apptainer run -B /gpfs ./gotchao.sif \
-  --barcode_fastq_path /gpfs/data/R2_001.fastq.gz \
-  --sequence_fastq_path /gpfs/data/R1_001.fastq.gz \
-  --whitelist_path /gpfs/data/outs/singlecell.csv \
-  --primer_sequence CCTAGCCTGCCTCAGGAAACTGTGGATCAGGAACCCAAGGATCAGAA \
-  --ref_codon GAG \
-  --mutation_codon GGA \
-  --mutation_start 48 \
-  --mutation_end 50 \
-  --max_mismatches_primer 3 \
-  --out ./results_folder
+         --barcode_fastq_path "/data/tests/data/test_barcode_R2.fastq.gz" \
+         --sequence_fastq_path "/data/tests/data/test_seq_R1.fastq.gz" \
+         --whitelist_path "/data/tests/data/test_singlecell.csv" \
+         --primer_sequence CCTAGCCTGCCTCAGGAAACTGTGGATCAGGAACCCAAGGATCAGAA \
+         --ref_codon GAG --mutation_codon GGA \
+         --mutation_start 48 --mutation_end 50 --max_mismatches_primer 3 \
+         --out "/data/tests/output_test_run"
 ```
 
 ### 2. Running with Docker
