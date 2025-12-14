@@ -81,35 +81,64 @@ The `.sif` file is a standalone executable. We use `-B` to bind your data folder
 
 ```bash
 # Example: Running on a cluster
-# Note: We use 'apptainer run' to explicitly pass the -B bind flag
+# Syntax: apptainer run -B <COMMON_PARENT_DIR> gotchao.sif ...
+
+# Example: Binding /gpfs so the container sees inputs AND can write outputs there
 apptainer run -B /gpfs ./gotchao.sif \
-         --barcode_fastq_path "/data/tests/data/test_barcode_R2.fastq.gz" \
-         --sequence_fastq_path "/data/tests/data/test_seq_R1.fastq.gz" \
-         --whitelist_path "/data/tests/data/test_singlecell.csv" \
-         --primer_sequence CCTAGCCTGCCTCAGGAAACTGTGGATCAGGAACCCAAGGATCAGAA \
-         --ref_codon GAG --mutation_codon GGA \
-         --mutation_start 48 --mutation_end 50 --max_mismatches_primer 3 \
-         --out "/data/tests/output_test_run"
+  --barcode_fastq_path /path/to/data/your_sample_barcode.fastq.gz \
+  --sequence_fastq_path /path/to/data/your_sample_gotcha.fastq.gz \
+  --whitelist_path /path/to/data/singlecell.csv \
+  --primer_sequence <YOUR_PRIMER> \
+  --ref_codon <WT> \
+  --mutation_codon <MUT> \
+  --mutation_start <START> \
+  --mutation_end <END> \
+  --out /gpfs/project/results/sample_01
 ```
 
 ### 2. Running with Docker
 You must mount your current directory (volume) so results persist after the container stops.
 
 ```bash
-# Mount current directory $(pwd) to /data inside container
-docker run --rm -v $(pwd):/data ghcr.io/theob0t/gotchao:latest \
-  --barcode_fastq_path /data/R2_001.fastq.gz \
-  --sequence_fastq_path /data/R1_001.fastq.gz \
-  --whitelist_path /data/singlecell.csv \
-  --primer_sequence CCTAGCCTGCCTCAGGAAACTGTGGATCAGGAACCCAAGGATCAGAA \
-  --ref_codon GAG \
-  --mutation_codon GGA \
-  --mutation_start 48 \
-  --mutation_end 50 \
-  --max_mismatches_primer 3 \
-  --out /data/results_folder
-```
+# Syntax: -v <HOST_PATH>:<CONTAINER_PATH>
 
+# Example: We map the current folder $(pwd) to /data inside the container
+docker run --rm -v $(pwd):/data ghcr.io/theob0t/gotchao:latest \
+  --barcode_fastq_path /data/your_sample_barcode.fastq.gz \
+  --sequence_fastq_path /data/your_sample_gotcha.fastq.gz \
+  --whitelist_path /data/singlecell.csv \
+  --primer_sequence <YOUR_PRIMER> \
+  --ref_codon <WT> \
+  --mutation_codon <MUT> \
+  --mutation_start <START> \
+  --mutation_end <END> \
+  --out /data/output_folder
+
+```
+---
+## 🧪 Testing (Demo)
+
+We provide a micro-dataset to verify the pipeline works. Since the test data is stored in this repository, **you must clone the repo** to run the test.
+
+1.  **Get the Test Data:**
+    ```bash
+    git clone https://github.com/theob0t/GoTChAo.git
+    cd GoTChAo
+    ```
+
+2.  **Get the Container:**
+    ```bash
+    # HPC Users:
+    apptainer build gotchao.sif docker://ghcr.io/theob0t/gotchao:latest
+    ```
+
+3.  **Run the Test Script:**
+    We provide a script that automatically runs the container on the local test data and verifies the results.
+    ```bash
+    # This script detects if you have Docker or Apptainer and runs accordingly
+    ./tests/run_test.sh
+    ```
+    *   **Expected Output:** `SUCCESS: Results match!`
 ---
 
 ## 🔧 Arguments Explained
