@@ -19,9 +19,9 @@ if [ "$CI" = "true" ]; then
     docker run --rm \
         -v "${REPO_ROOT}:/data" \
         gotchao-image \
-        --barcode_fastq_path "/data/tests/data/R2_001.fastq.gz" \
-        --sequence_fastq_path "/data/tests/data/R1_001.fastq.gz" \
-        --whitelist_path "/data/tests/data/singlecell.csv" \
+        --barcode_fastq_path "/data/tests/data/test_barcode_R2.fastq.gz" \
+        --sequence_fastq_path "/data/tests/data/test_seq_R1.fastq.gz" \
+        --whitelist_path "/data/tests/data/test_singlecell.csv" \
         --primer_sequence CCTAGCCTGCCTCAGGAAACTGTGGATCAGGAACCCAAGGATCAGAA \
         --ref_codon GAG --mutation_codon GGA \
         --mutation_start 48 --mutation_end 50 --max_mismatches_primer 3 \
